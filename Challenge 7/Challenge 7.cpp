@@ -6,7 +6,6 @@
 #include <vector>
 #include <array>
 #include <limits>
-#include <cctype>
 
 using namespace std;
 
@@ -27,7 +26,7 @@ struct Player
     int WeaponIndex = -1;
 };
 
-// Function to get valid integer input
+// Checks if the input made is valid
 int GetNumber()
 {
     int number;
@@ -45,12 +44,14 @@ int GetNumber()
     return number;
 }
 
-// Function to display the shop
+// Displays the shop and the amount of money the party has
 void DisplayShop(const vector<Weapon>& weapons, int coins)
 {
+
     cout << "\n>> You currently have " << coins
         << " coins. You can buy the following items:\n";
 
+	// Displays the weapons and their prices and damage
     for (int i = 0; i < weapons.size(); i++)
     {
         cout << ">> " << i + 1 << ". "
@@ -61,7 +62,7 @@ void DisplayShop(const vector<Weapon>& weapons, int coins)
     }
 }
 
-// Function to purchase a weapon
+// Function for buying a weapon
 void PurchaseWeapon(
     Player& player,
     int playerNumber,
@@ -82,10 +83,10 @@ void PurchaseWeapon(
             continue;
         }
 
-        // Convert menu selection into vector index
+        // Converts menu selection into vector index
         int index = choice - 1;
 
-        // Check whether the weapon has already been purchased
+        // Checks if the weapon has already been bought
         if (weapons[index].Purchased)
         {
             cout << "[!] ERROR: This weapon is unavailable "
@@ -105,7 +106,7 @@ void PurchaseWeapon(
             continue;
         }
 
-        // Complete the purchase
+        // Completes the purchase
         coins -= weapons[index].Price;
 
         weapons[index].Purchased = true;
@@ -122,7 +123,8 @@ void PurchaseWeapon(
     }
 }
 
-// Function to ask whether the players are happy
+// Asks if the party is happy with their selection
+
 bool ConfirmSelection()
 {
     string answer;
@@ -133,14 +135,6 @@ bool ConfirmSelection()
             << "of weapons? (yes/no): ";
 
         cin >> answer;
-
-        // Convert answer to lowercase
-        for (char& c : answer)
-        {
-            c = static_cast<char>(
-                tolower(static_cast<unsigned char>(c))
-                );
-        }
 
         if (answer == "yes")
         {
@@ -155,7 +149,7 @@ bool ConfirmSelection()
     }
 }
 
-// Function to display the final party
+// Displays the entire party and weapons
 void DisplayParty(
     const array<Player, 3>& players,
     const vector<Weapon>& weapons)
@@ -176,13 +170,13 @@ void DisplayParty(
     }
 }
 
-// Main program
+
 int main()
 {
-    // Create the three players
+    
     array<Player, 3> players;
 
-    // Ask players for their names
+    
     for (int i = 0; i < players.size(); i++)
     {
         cout << "- Enter player #" << i + 1
@@ -191,7 +185,7 @@ int main()
         getline(cin, players[i].Name);
     }
 
-    // Create the weapon catalogue
+    // Creates the list of weapons in the shop
     vector<Weapon> weapons =
     {
         {"Great Sword", 40, 100, "Knight", false},
@@ -205,13 +199,13 @@ int main()
 
     bool finalSelection = false;
 
-    // Repeat the shopping process until confirmed
+    // Repeat shopping until the players say yes
     while (!finalSelection)
     {
-        // Reset party currency
+        // Resets money
         int coins = 100;
 
-        // Reset weapons and player selections
+        // Resets weapons and player selections
         for (Weapon& weapon : weapons)
         {
             weapon.Purchased = false;
@@ -222,17 +216,17 @@ int main()
             player.WeaponIndex = -1;
         }
 
-        // Welcome message
-        cout << "\n>> Welcome "
+        
+        cout << "\n>> Heh heh heh! Welcome, Welcome "
             << players[0].Name << ", "
             << players[1].Name << " and "
             << players[2].Name
-            << " to the shop!\n";
+            << " to the shop! Pick whatever you fancy!\n";
 
-        // Display the shop
+        
         DisplayShop(weapons, coins);
 
-        // Allow each player to purchase a weapon
+        // Allows each player to purchase a weapon
         for (int i = 0; i < players.size(); i++)
         {
             PurchaseWeapon(
@@ -243,7 +237,7 @@ int main()
             );
         }
 
-        // Confirm the party's selection
+        // Confirms the party's selection
         finalSelection = ConfirmSelection();
 
         if (!finalSelection)
@@ -252,10 +246,10 @@ int main()
         }
     }
 
-    // Display the final party
+    // Displays the final party
     DisplayParty(players, weapons);
 
-    // Opening game message
+   
     cout << "\n>> You are situated in a forest. "
         << "A monster appears...\n";
 
